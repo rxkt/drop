@@ -10,7 +10,7 @@ module.exports = function Drop(dispatch) {
 		curHp = 0,
 		maxHp = 0
 
-	dispatch.hook('S_LOGIN', 9, event => {
+	dispatch.hook('S_LOGIN', 10, event => {
 		({gameId} = event)
 		isCastanic = Math.floor((event.templateId - 10101) / 200) === 3
 	})
@@ -33,16 +33,16 @@ module.exports = function Drop(dispatch) {
 	})
 
 	command.add('drop', percent => {
-		percent = Number(percent)
+		percent = BigInt(percent)
 
 		if(!(percent > 0 && percent <= 100) || !curHp) return
 
-		let percentToDrop = (curHp * 100 / maxHp) - percent
+		let percentToDrop = (curHp * BigInt(100) / maxHp) - percent
 
 		if(percentToDrop <= 0) return
 
 		dispatch.toServer('C_PLAYER_LOCATION', 2, Object.assign({}, location, {
-			z: location.z + 400 + percentToDrop * (isCastanic ? 20 : 10),
+			z: location.z + 400 + parseFloat(percentToDrop) * (isCastanic ? 20 : 10),
 			type: 2,
 			time: location.time - locRealTime + Date.now() - 50
 		}))
