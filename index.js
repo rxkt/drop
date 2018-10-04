@@ -37,7 +37,7 @@ module.exports = function Drop(dispatch) {
 
 		if(!(percent > 0 && percent <= 100) || !curHp) return
 
-		let percentToDrop = (curHp * BigInt(100) / maxHp) - percent
+		let percentToDrop = (BigInt(curHp) * BigInt(100) / BigInt(maxHp)) - percent
 
 		if(percentToDrop <= 0) return
 
